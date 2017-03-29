@@ -6,3 +6,6 @@ node_modules/*
 
 # Babel configuration
 .babelrc
+
+# NPM Logs
+npm-debug.log
