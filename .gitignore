@@ -1,0 +1,8 @@
+# Ignore all node_modules
+node_modules/*
+
+#Ignore .env variables
+.env
+
+# Babel configuration
+.babelrc
