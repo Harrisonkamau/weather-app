@@ -1,3 +1,4 @@
+// Require modules from the NPM registry
 var koa = require('koa');
 var json = require('koa-json');
 
@@ -9,7 +10,7 @@ app.experimental = true
 var router = require('./server/routes/index');
 var config = require('./server/config/config');
 
-
+// set app to use JSON pretty-printed response middleware
 app.use(json());
 
 // use the routes defined using the router
