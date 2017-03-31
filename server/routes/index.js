@@ -1,24 +1,27 @@
-var Router = require('koa-router');
-var ip = require('ip');
-var request = require('request');
-var weather = require('openweather-apis');
+// Require modules from the NPM registry
+let Router = require('koa-router');
+let ip = require('ip');
+let request = require('request');
+let weather = require('openweather-apis');
 
 // set /api prefix for all routes
-var router = new Router({ prefix: '/api' });
+const router = new Router({ prefix: '/api' });
 
 // Local modules
-var config = require('../config/config');
+const config = require('../config/config');
 
 /*
  ==================================
    Routing End Points
  ==================================
 */
+
+// Get home page: GET /api/
 router.get('/', async (ctx) => {
-  ctx.body = 'Welcome home!';
+  ctx.body = 'Welcome home! Visit either: /ip, /location or /weather to see the magic :-o';
 });
 
-// GET ip address
+// GET ip address: GET /api/ip
 router.get('/ip', async (ctx, next) => {
   ctx.body = {
     ip: getMyIP()
@@ -27,13 +30,12 @@ router.get('/ip', async (ctx, next) => {
   await next();
 })
 
-// GEO Locate my_ip
+// GEO Locate my_ip: GET /api/location
 router.get('/location', async (ctx, next) => {
   // Initialize the getCoordinates Promise function
   return getCoordinates().then(function (result) {
     const latitude = result.lat;
     const longitude = result.lon;
-    // console.log(latitude, longitude);
 
     // respond with a JSON object
     ctx.body = {
@@ -45,34 +47,53 @@ router.get('/location', async (ctx, next) => {
   await next();
 })
 
-// GET Weather data
-router.get('/weather', async (ctx) => {
-  return getCoordinates().then(function (result) {
-
-    // Weather constant variables
+// GET Weather data: GET /api/weather
+router.get('/weather', async (ctx, next) => {
+  // re-call the Promise to get Geolocation
+  return getCoordinates().then((result) => {
+    // Define Weather constant variables
     const WEATHER_API_KEY = config.API_KEY;
     const lat = result.lat;
-    const lon = result.lon;
-    const APPID = weather.setAPPID(WEATHER_API_KEY)
+    const lon = result.lon;  
 
-    // openweathera-apis setting
-    weather.setLang('en');
-    weather.setCoordinate(lat, lon);
+    // openweathera-apis settings
+    weather.setLang('en'); //set language
+    weather.setCoordinate(lat, lon); // set coordinates
+    weather.setAPPID(WEATHER_API_KEY)  // set APPID 
 
-    // Get the whole weather JSON object
-    weather.getAllWeather(function (err, data) {
-      if (err) console.error(err)
-      ctx.body = 'hello'
-    });
+    return new Promise((resolve, reject) => {
+      // Get all the JSON file returned from server
+      weather.getAllWeather((err, data) => {
+        if (err) {
+          reject(err);
+        } else {
+          let dataObj = {
+            coordinates: data.coord,
+            weather: data.weather,
+            temperature: data.main.temp,
+            humidity: data.main.humidity,
+            city: data.name,
+            weatherCode: data.cod,
+            country: data.sys.country
+          }
+          // return the data object in the ctx.response.body
+          ctx.body = dataObj;
+          resolve(ctx.body);
+        }
+      })
+    })
+
   })
-
 })
+
 
 /*
  =====================================
   Routing helpers - Private functions
  =====================================
 */
+
+// get user's IP address
 function getMyIP() {
   return ip.address();
 }
@@ -89,6 +110,7 @@ function getCoordinates() {
       query: myIP
     }
 
+    // use Request() to make http calls to ip-api and send data as a JSON object
     request(options, function (err, res) {
       if (err) {
         reject(err);
@@ -100,7 +122,6 @@ function getCoordinates() {
     })
   })
 }
-
 
 // Modules for export
 module.exports = router;
