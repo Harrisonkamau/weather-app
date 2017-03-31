@@ -17,6 +17,7 @@
     "dotenv": "^4.0.0",
     "ip": "^1.1.5",
     "koa": "^2.0.0-alpha.8",
+    "koa-body-parser": "^1.1.2",
     "koa-json": "^2.0.2",
     "koa-router": "^7.0.1",
     "openweather-apis": "^3.0.2",
