@@ -34,7 +34,7 @@ To run the server, you'll need to have babel-cli installed
 ```javascript
 npm install --save-dev babel-cli
 ```
-Async/await isn’t natively support in Node.js yet, even using the latest version (v6). So we'll use babel to compile __tomorrow's__ JavaScript.
+Async/await isn’t natively supported in Node.js yet, even using the latest version (v6). So we'll use babel to compile __tomorrow's__ JavaScript.
 
 Create a **.babelrc** file and add the following
 ```javascript
