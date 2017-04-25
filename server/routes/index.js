@@ -24,7 +24,7 @@ router.get('/', async (ctx) => {
 // GET ip address: GET /api/ip
 router.get('/ip', async (ctx, next) => {
   ctx.body = {
-    ip: getMyIP()
+    ip: _getMyIP()
   }
   // Invoke the downstream middleware
   await next();
@@ -33,7 +33,7 @@ router.get('/ip', async (ctx, next) => {
 // GEO Locate my_ip: GET /api/location
 router.get('/location', async (ctx, next) => {
   // Initialize the getCoordinates Promise function
-  return getCoordinates().then(function (result) {
+  return _getCoordinates().then(function (result) {
     const latitude = result.lat;
     const longitude = result.lon;
 
@@ -50,7 +50,7 @@ router.get('/location', async (ctx, next) => {
 // GET Weather data: GET /api/weather
 router.get('/weather', async (ctx, next) => {
   // re-call the Promise to get Geolocation
-  return getCoordinates().then((result) => {
+  return _getCoordinates().then((result) => {
     // Define Weather constant variables
     const WEATHER_API_KEY = config.API_KEY;
     const lat = result.lat;
@@ -94,15 +94,15 @@ router.get('/weather', async (ctx, next) => {
 */
 
 // get user's IP address
-function getMyIP() {
+function _getMyIP() {
   return ip.address();
 }
 
 // Use a Promise to get coordinates from the response body
-function getCoordinates() {
+function _getCoordinates() {
   return new Promise(function (resolve, reject) {
     // get ip address
-    var myIP = getMyIP();
+    var myIP = _getMyIP();
 
     // create an options object to be used by Request HTTP client
     var options = {
