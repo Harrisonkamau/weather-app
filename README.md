@@ -23,7 +23,7 @@ In your project's directory, create .env file to store your **API_KEY** and serv
 ```javascript
 touch .env
 ```
-The .env file should like similar to this:
+The .env file should be similar to this:
 ```javascript
 # Set default port
 PORT=4000
