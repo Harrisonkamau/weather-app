@@ -1,10 +1,12 @@
 #Weather App Middleware built in Koa.js and Node.js
+
+
 ##To run the app locally:
 clone the repo
 ```javascript
-git clone git@bitbucket.org:kamauharrison/koa-weather.git 
+git clone git@github.com:Harrisonkamau/weather-app.git 
 // Or for https users
-git clone https://kamauharrison@bitbucket.org/kamauharrison/koa-weather.git
+git clone https://github.com/Harrisonkamau/weather-app.git
 ```
 
 Navigate in to the projects folder
